@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.env*
+.firecrawl/
+# personal photos — never commit
+/raw/
+# processed assets re-render via `npm run assets`
+/public/d/raw/
+.DS_Store

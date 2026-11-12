@@ -1,0 +1,53 @@
+# WHITEJACK5
+
+> Applied AI engineer and full-stack builder. Navi Mumbai, India. B.Tech Computer
+> Engineering — AI & ML specialization (2024–2028). I turn messy data and product
+> ideas into systems that are measurable and explainable — fraud risk engines,
+> calibrated models, and the interfaces that make them usable.
+
+## Identity
+- Handle: WHITEJACK5 (public identity; visible site intentionally shows no name)
+- This site: 1-bit monochrome, dithered-imagery brutalist editorial
+- Tags: applied-ai, ml-systems, fraud-detection, full-stack, nextjs, fastapi
+
+## Key work (verified numbers)
+- TRACER — real-time UPI mule-ring fraud detection. NetworkX graph + XGBoost/SHAP,
+  p50 53 ms @ 18 rps, hash-chained audit ledger, bounded agent (approve/challenge/hold).
+  https://github.com/WHITEJACK5/TRACER-Real-Time-Mule-Ring-Defense
+- loan-default-risk — LightGBM isotonic PD on 1.35M LendingClub rows, ROC-AUC 0.69,
+  PR-AUC 0.35 (2017+ hold-out), +$7.4M simulated profit policy, p50 29 ms serving.
+  https://github.com/WHITEJACK5/loan-default-risk · demo https://whitejack5-loan-default-risk.hf.space
+- RegRAG — citation-grounded QA over RBI regulation; verbatim quotes verified by
+  code; refuses when the corpus does not support the answer. (building, D2/20)
+  https://github.com/WHITEJACK5/RegRAG
+- ArchVision AI — natural language / OpenAPI / SQL DDL → UML diagrams, 300 ms
+  two-way sync, budgeted GPT-4o/Claude copilot. https://github.com/12POISON/ARCHvision-AI-uml
+- WHITE COLLARS — job portal scraping real listings, one-click apply, staged
+  Express→Turborepo architecture. Live https://white-collars.vercel.app
+  https://github.com/WHITEJACK5/white-collars
+- DRQR — self-hosted dynamic QR platform, 25+ types, scan analytics, LLM review
+  summaries, JWT rotation + TOTP 2FA, 74.4% coverage.
+  https://github.com/WHITEJACK5/DYNAMIC-QR
+
+## Recognition
+- Arohan 2.0 — national-level hackathon (2025): 4th place
+- GitHub Pull Shark ×2 · 9 public repos · GPA 8.8/10.0
+
+## Credentials
+- Machine Learning Specialization — Stanford Online & DeepLearning.AI (2026)
+- Generative AI with LLMs — DeepLearning.AI & AWS (2026)
+- Retrieval-Augmented Generation — DeepLearning.AI (2026)
+
+## Contact
+- Email: bharadwajareddydevireddy@gmail.com
+- GitHub: https://github.com/WHITEJACK5
+- LinkedIn: https://www.linkedin.com/in/devireddybharadwaja
+- LeetCode: https://leetcode.com/u/devireddy5
+- Instagram: https://www.instagram.com/futurebug5
+- Resume: /resume.pdf
+
+## Principles
+1. Reproducible evaluation before optimization — a number you cannot re-derive is not a result.
+2. Explainability is part of the model, not a wrapper.
+3. Document the limits — failures admitted beat accuracy overstated.
+4. Small, testable slices — a change that can be reviewed can be trusted.

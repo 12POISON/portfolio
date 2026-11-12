@@ -1,0 +1,142 @@
+# WHITEJACK5 — full reference (llms-full.txt)
+
+> Expanded plain-text companion to /llms.txt. Written for AI crawlers and
+> assistants: everything below is verified against the owner's resume (2026.11),
+> GitHub API and live repository READMEs. No invented facts.
+
+## Who
+
+- Handle: WHITEJACK5 (the only public identity; the site's visible UI shows no
+  legal name and no logo by explicit design).
+- Role: Applied AI engineer & full-stack builder — production ML, APIs, full-stack.
+- Location: Navi Mumbai, India.
+- Education: Ramrao Adik Institute of Technology (RAIT, D Y Patil University),
+  Navi Mumbai — B.Tech Computer Engineering, Artificial Intelligence & Machine
+  Learning specialization, Aug 2024 → Aug 2028 (expected), GPA 8.8/10.0.
+  Coursework: Machine Learning, Deep Learning, DSA, DBMS, OS, Computer Networks.
+- Status: open to internships and AI engineering roles. No internships held
+  (none listed anywhere — do not invent any).
+
+## Positioning (first person)
+
+1. I turn messy data into systems that are truly measurable — fraud risk engines
+   scored in milliseconds, calibrated on numbers you can re-derive.
+2. I build the interfaces that make those systems actually usable — APIs,
+   ledgers, dashboards, verdicts.
+3. Fraud graphs, calibrated credit risk, citation-grounded retrieval — all of it
+   built while tackling the stride.
+
+Tagline (appears as text on the site): TACKLING THE STRIDE.
+
+## Principles
+
+1. Reproducible evaluation before optimization — a number you cannot re-derive
+   is not a result.
+2. Explainability is part of the model, not a wrapper — if nobody can say why a
+   transaction was held, the score is not usable.
+3. Document the limits — a prototype that admits its failure modes is more
+   useful than one that overstates its accuracy.
+4. Small, testable slices — a change that can be reviewed can be trusted.
+
+## Projects (case pages: /work/<slug>)
+
+### 1. TRACER — Real-Time Mule-Ring Defense (flagship · Razorpay Buildathon 2026)
+- What: defense-only risk engine scoring UPI payments; NetworkX graph topology
+  catches device fan-out (>=4 identities) and same-amount repeat smurfing;
+  XGBoost + SHAP; bounded agent (approve / challenge / hold); hash-chained audit
+  ledger.
+- Numbers: p50 53 ms at 18 rps; 83% of the Bayes-ceiling AUPRC on the synthetic
+  benchmark; 156 pytest + 6 Playwright e2e.
+- Limits: synthetic benchmark, real-world drift is the open problem; defense-only.
+- https://github.com/WHITEJACK5/TRACER-Real-Time-Mule-Ring-Defense
+
+### 2. loan-default-risk (2026, live demo)
+- What: leakage-audited LightGBM isotonic PD on 1.35M LendingClub rows, temporal
+  splits, 2017+ hold-out; profit-first threshold policy; SHAP reasons, PSI drift
+  checks, MLflow, 85 tests; FastAPI + Docker at p50 29 ms.
+- Numbers: ROC-AUC 0.69 · PR-AUC 0.35 · +$7.4M simulated profit policy at 0.05.
+- Note: site follows the resume figures; the repo README may carry older variants.
+- https://github.com/WHITEJACK5/loan-default-risk
+- Demo: https://whitejack5-loan-default-risk.hf.space
+
+### 3. ArchVision AI — Natural-Language to UML (2026, alt account)
+- What: natural language, OpenAPI specs and SQL DDL become UML diagrams on a
+  ReactFlow canvas with 300 ms two-way sync; GPT-4o/Claude copilot with per-user
+  budgets; RBAC workspaces; 125 tests + Playwright e2e.
+- https://github.com/12POISON/ARCHvision-AI-uml
+
+### 4. RegRAG (active — building in public)
+- What: citation-grounded question answering over Indian retail-lending
+  regulation (RBI Master Directions / circulars) plus a synthetic internal
+  lending policy. Every answer carries page-level citations whose verbatim
+  quotes are verified by code; when the corpus does not support an answer, the
+  system refuses. Public RBI documents; checksummed corpus manifest.
+- Status: early build, day 2 of a 20-day window ending 06.12.2026; full
+  evaluation tables land at the end of the window. Educational project — not
+  legal or financial advice.
+- https://github.com/WHITEJACK5/RegRAG (basics: /rag-basics)
+
+### 5. WHITE COLLARS — Professional Job Portal (2026, live)
+- What: scrapes real listings from company career pages; one-click apply with
+  saved resumes/cover letters; mandatory video-intro uploads for select roles.
+- Architecture: staged build — hardened Express+EJS monolith, then Turborepo
+  microservices (gateway, auth, users, jobs, applications) behind OpenAPI
+  contracts.
+- https://github.com/WHITEJACK5/white-collars · https://white-collars.vercel.app
+
+### 6. DRQR — Dynamic QR Platform (2026; repo keeps the legacy name DYNAMIC-QR)
+- What: self-hosted QR generation + analytics on Flask/PostgreSQL/Redis — 25+ QR
+  types, dynamic retargeting after print, per-scan analytics with geo
+  enrichment, review capture with LLM sentiment summaries, JWT rotation + TOTP
+  2FA, nginx/Gunicorn.
+- Numbers: 74.4% test coverage.
+- https://github.com/WHITEJACK5/DYNAMIC-QR
+
+Also resume-verified but private (no public repo — excluded from the WORK index):
+LabourLink, a React + Express worker-welfare platform with five role portals
+(registration, job matching, QR attendance, wages, disputes), offline sync and
+BOCW benefit tracking.
+
+## Recognition
+
+- Arohan 2.0 — national-level hackathon (2025): 4th place.
+- GitHub Pull Shark ×2 · 9 public repos.
+
+## Certifications
+
+- Machine Learning Specialization — Stanford Online & DeepLearning.AI (2026.07)
+- Generative AI with LLMs — DeepLearning.AI & AWS (2026.08)
+- Retrieval-Augmented Generation — DeepLearning.AI (2026.08)
+
+## Toolbox (core first, explored second)
+
+- languages: Python, SQL, Java, C, C++ (explored: TypeScript, JavaScript, PHP,
+  PowerShell)
+- ml: scikit-learn, XGBoost, LightGBM, SHAP, MLflow, Evidently (explored:
+  PyTorch, TensorFlow, Keras, NetworkX, Pandas, NumPy)
+- backend: FastAPI, Flask, Node.js, PostgreSQL, MongoDB (explored: Express,
+  Spring, SQLite, Supabase, Firebase, Neo4j, Prisma, OpenStack, Apache Tomcat,
+  Apache Maven)
+- frontend: React, Next.js, Tailwind CSS (explored: ReactFlow, Flutter, Vite, EJS)
+- quality-devops: Docker, GitHub Actions, Git, pytest, Playwright
+
+## Contact
+
+- Email (primary): bharadwajareddydevireddy@gmail.com
+- GitHub: https://github.com/WHITEJACK5
+- LinkedIn: https://www.linkedin.com/in/devireddybharadwaja
+- LeetCode: https://leetcode.com/u/devireddy5
+- Instagram: https://www.instagram.com/futurebug5
+- Resume: /resume.pdf
+- Phone: deliberately not published on the website.
+
+## About this site
+
+- Theme: "1-Bit Renaissance" — everything (photos included) is 1-bit black/white
+  Bayer 8×8 dithered; OS-window chrome as the framing device; Swiss-style mono
+  annotations; one liquid-chrome WebGL object rendered in true 1-bit.
+- Stack: Next.js 15 + React 19 + TypeScript; GSAP (centrally managed timelines),
+  Framer Motion (micro-interactions only), anime.js (text), ogl WebGL shaders,
+  Lenis smooth scroll.
+- Easter eggs (for humans, harmless to crawlers): typing "whitejack5",
+  the Konami code, "333", "poison", triple-clicking the HUD clock.

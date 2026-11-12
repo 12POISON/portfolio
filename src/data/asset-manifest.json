@@ -1,0 +1,38 @@
+{
+  "portrait-field": {
+    "width": 860,
+    "height": 1528,
+    "png": 59015,
+    "avif": 92202
+  },
+  "portrait-id": {
+    "width": 409,
+    "height": 441,
+    "png": 6018,
+    "avif": 12834
+  },
+  "life-concert": {
+    "width": 760,
+    "height": 1013,
+    "png": 29829,
+    "avif": 44153
+  },
+  "life-street": {
+    "width": 760,
+    "height": 1350,
+    "png": 30613,
+    "avif": 62198
+  },
+  "life-mirror": {
+    "width": 760,
+    "height": 1351,
+    "png": 25218,
+    "avif": 57575
+  },
+  "hand-orb": {
+    "width": 1440,
+    "height": 823,
+    "png": 36495,
+    "avif": 40024
+  }
+}
