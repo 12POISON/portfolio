@@ -1047,6 +1047,18 @@ html.cursor-on * {
 .cert-by {
   color: var(--ink-dim);
 }
+/* the credential link sits under each certificate — opens Coursera */
+.cert-link {
+  justify-self: start;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--line-strong);
+}
+.cert-link:hover,
+.cert-link:focus-visible {
+  background: var(--ink);
+  color: #000;
+}
 .zip {
   display: grid;
   gap: 10px;

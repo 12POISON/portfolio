@@ -17,13 +17,22 @@ export default function Toolbox() {
 
       <div className="tb-grid">
         <div data-reveal>
-          <Win title="certs.txt" meta="VERIFIED ×3">
+          <Win title="certs" meta="VERIFIED ×3">
             <ul className="cert-list">
               {TOOLBOX.certs.map((c) => (
                 <li key={c.name} className="cert">
                   <span className="mono cert-when">{c.when}</span>
                   <span className="cert-name serif">{c.name}</span>
                   <span className="mono cert-by">{c.by}</span>
+                  <a
+                    className="mono cert-link"
+                    href={c.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-hover
+                  >
+                    VIEW CREDENTIAL ↗
+                  </a>
                 </li>
               ))}
             </ul>
@@ -31,7 +40,7 @@ export default function Toolbox() {
         </div>
 
         <div data-reveal>
-          <Win title="skills.zip" meta="UNPACKED">
+          <Win title="skills" meta="6 FOLDERS">
             <div className="zip">
               {TOOLBOX.folders.map((f) => (
                 <div className="zip-folder" key={f.name}>

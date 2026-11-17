@@ -266,18 +266,38 @@ export const PROJECTS: Project[] = [
 
 export type Folder = { name: string; core: string[]; explored?: string[] };
 
-export const TOOLBOX: { folders: Folder[]; certs: { name: string; by: string; when: string }[]; marquee: [string[], string[]] } = {
+export const TOOLBOX: {
+  folders: Folder[];
+  certs: { name: string; by: string; when: string; url: string }[];
+  marquee: [string[], string[]];
+} = {
   folders: [
     { name: "languages", core: ["Python", "SQL", "Java", "C", "C++"], explored: ["TypeScript", "JavaScript", "PHP", "PowerShell"] },
     { name: "ml", core: ["scikit-learn", "XGBoost", "LightGBM", "SHAP", "MLflow", "Evidently"], explored: ["PyTorch", "TensorFlow", "Keras", "NetworkX", "Pandas", "NumPy"] },
+    { name: "llm", core: ["LangChain", "LangGraph", "Vector DBs"] },
     { name: "backend", core: ["FastAPI", "Flask", "Node.js", "PostgreSQL", "MongoDB"], explored: ["Express", "Spring", "SQLite", "Supabase", "Firebase", "Neo4j", "Prisma", "OpenStack", "Apache Tomcat", "Apache Maven"] },
     { name: "frontend", core: ["React", "Next.js", "Tailwind CSS"], explored: ["ReactFlow", "Flutter", "Vite", "EJS"] },
     { name: "quality-devops", core: ["Docker", "GitHub Actions", "Git", "pytest", "Playwright"] },
   ],
   certs: [
-    { name: "Machine Learning Specialization", by: "Stanford Online · DeepLearning.AI", when: "2026.07" },
-    { name: "Generative AI with LLMs", by: "DeepLearning.AI · AWS", when: "2026.08" },
-    { name: "Retrieval-Augmented Generation", by: "DeepLearning.AI", when: "2026.08" },
+    {
+      name: "Machine Learning Specialization",
+      by: "Stanford Online · DeepLearning.AI",
+      when: "2026.07",
+      url: "https://www.coursera.org/account/accomplishments/specialization/certificate/RGRXEIYVHS9F",
+    },
+    {
+      name: "Generative AI with LLMs",
+      by: "DeepLearning.AI · AWS",
+      when: "2026.08",
+      url: "https://www.coursera.org/account/accomplishments/certificate/UUN6M8M8UC5E",
+    },
+    {
+      name: "Retrieval-Augmented Generation",
+      by: "DeepLearning.AI",
+      when: "2026.08",
+      url: "https://www.coursera.org/account/accomplishments/certificate/QJZSNQS6ARBG",
+    },
   ],
   marquee: [
     ["APPLIED AI", "ML SYSTEMS", "FRAUD GRAPHS", "CITATION-GROUNDED RAG", "CALIBRATION", "SHAP", "REPRODUCIBLE EVALS"],
