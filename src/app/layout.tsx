@@ -68,6 +68,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: "#000000",
   colorScheme: "dark",
+  viewportFit: "cover", // full-bleed on notched devices — safe-area insets handle the cutouts
 };
 
 // JSON-LD — the ONLY place the legal name appears, invisible to the UI.

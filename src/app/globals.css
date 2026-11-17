@@ -21,6 +21,8 @@ html {
   background: var(--bg);
   color-scheme: dark;
   scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%; /* iOS landscape must not auto-inflate text */
+  -webkit-tap-highlight-color: transparent; /* the theme paints its own feedback */
 }
 body {
   background: var(--bg);
@@ -34,6 +36,12 @@ body {
 ::selection {
   background: var(--ink);
   color: #000;
+}
+/* one-tap response, no double-tap-zoom hijack on controls */
+a,
+button,
+[data-hover] {
+  touch-action: manipulation;
 }
 :focus-visible {
   outline: 1px dashed var(--ink);
@@ -147,6 +155,9 @@ html.menu-open {
 .hud-frame {
   position: fixed;
   inset: 10px;
+  /* notched / edge-to-edge devices: never paint the frame under the cutout */
+  inset: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px))
+    max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
   border: 1px solid var(--line);
   pointer-events: none;
   z-index: 40;
@@ -315,6 +326,15 @@ html.cursor-on * {
   display: grid;
   place-items: center;
   padding: var(--pad-x);
+  overscroll-behavior: contain;
+}
+/* short viewports (landscape phones): top-align + scroll instead of clipping */
+@media (max-height: 560px) {
+  .menu {
+    place-items: start center;
+    overflow-y: auto;
+    padding-block: 24px;
+  }
 }
 .menu-panel {
   width: min(560px, 94vw);
@@ -369,6 +389,9 @@ html.cursor-on * {
   position: fixed;
   right: 22px;
   bottom: 22px;
+  /* respect the home indicator / notch on edge-to-edge devices */
+  right: max(22px, env(safe-area-inset-right, 0px));
+  bottom: max(22px, env(safe-area-inset-bottom, 0px));
   z-index: 58;
   width: min(380px, calc(100vw - 44px));
 }
@@ -394,6 +417,7 @@ html.cursor-on * {
 }
 .chap-rule {
   flex: 1;
+  min-width: 24px; /* survives flex-wrap on tiny screens */
   height: 1px;
   background: var(--line);
 }
@@ -753,6 +777,34 @@ html.cursor-on * {
   color: var(--ink-dim);
   font-size: 20px;
 }
+/* README toggle for touch devices — hover never fires on phones/tablets, so
+   the row carries a full-width strip: tap to unfold the README dropdown.
+   Auto-placed as the last grid row on every width (explicit areas above). */
+.row-readme {
+  grid-column: 1 / -1;
+  z-index: 2; /* above the row-cover link overlay */
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.row-readme:hover,
+.row-readme:focus-visible {
+  background: var(--ink);
+  color: #000;
+}
+.row-readme[aria-expanded="true"] {
+  background: var(--ink);
+  color: #000;
+}
+/* hover-capable devices use the hover dropdown instead — strip never shows */
+@media (hover: hover) {
+  .row-readme {
+    display: none;
+  }
+}
 /* README dropdown — unfolds beneath the hovered WORK row. Black panel, white
    text — the inverse of the hovered row. Absolute: never shifts rows below. */
 .readme-drop {
@@ -785,7 +837,10 @@ html.cursor-on * {
 }
 .readme-scroll {
   max-height: min(480px, 62vh);
+  max-height: min(480px, 62dvh); /* mobile URL-bar-safe */
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* scrolling the README must not fling the page */
 }
 .readme-pre {
   margin: 0;
@@ -916,6 +971,7 @@ html.cursor-on * {
   grid-template-rows: repeat(7, 9px);
   gap: 3px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* momentum swipe on iOS */
   padding-bottom: 6px;
 }
 .commit-col {
@@ -1150,7 +1206,7 @@ html.cursor-on * {
 }
 .signal-row {
   display: grid;
-  grid-template-columns: 40px 110px 1fr 20px;
+  grid-template-columns: 40px 110px minmax(0, 1fr) 20px;
   gap: 12px;
   align-items: baseline;
   padding: 14px 8px;
@@ -1256,7 +1312,7 @@ a.footer-link:hover {
   color: var(--ink);
   font-size: 15px;
   letter-spacing: 0.06em;
-  min-width: 280px;
+  min-width: min(280px, 100%);
 }
 .footer-quote em {
   font-style: italic;
@@ -1351,6 +1407,7 @@ a.footer-link:hover {
 }
 .case-nav {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 14px;
   border-top: 1px solid var(--line);
@@ -1438,6 +1495,71 @@ a.footer-link:hover {
   }
   .boot-log {
     font-size: 10px;
+  }
+  /* chapter head: drop the binary texture, let the note wrap instead of overflow */
+  .chap-head {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+  .chap-bin,
+  .chap-cross {
+    display: none;
+  }
+  /* work rows: tighter title so long repo names still breathe on 320-360px */
+  .row-name {
+    font-size: clamp(20px, 6.4vw, 26px);
+  }
+  /* signal index: slim the fixed columns, keep the value readable */
+  .signal-row {
+    grid-template-columns: 28px 84px minmax(0, 1fr) 14px;
+    gap: 8px;
+  }
+  /* toolbox zip explorer: stack label above the file chips */
+  .zip-folder {
+    grid-template-columns: 1fr;
+  }
+  /* iOS Safari auto-zooms focused inputs under 16px */
+  .mailto-input {
+    font-size: 16px;
+  }
+}
+
+/* ── TOUCH COMFORT ────────────────────────────────────────────────── */
+/* coarse pointers: grow the small tap targets to ~44px */
+@media (hover: none) and (pointer: coarse) {
+  .hud-btn {
+    padding: 10px 12px;
+  }
+  .email-btn,
+  .top-btn,
+  .case-link,
+  .row-case {
+    padding: 12px 16px;
+  }
+}
+
+/* ── SHORT LANDSCAPE ─────────────────────────────────────────────── */
+/* phones on their side: the hero window is capped by HEIGHT (image is
+   1440×823 → aspect 1.75) so it can never be clipped by the short viewport */
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero-win {
+    width: min(560px, 92vw, calc((100vh - 190px) * 1.75));
+    width: min(560px, 92vw, calc((100svh - 190px) * 1.75));
+  }
+}
+
+/* ── NOTCH / CUTOUT AWARENESS ────────────────────────────────────── */
+/* with viewport-fit=cover, landscape phones lay content under the notch —
+   push the reading column clear of the sensor housing */
+@media (orientation: landscape) {
+  .chapter,
+  .hero,
+  .case,
+  .nf,
+  .boot-inner,
+  .menu {
+    padding-left: max(var(--pad-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right, 0px));
   }
 }
 

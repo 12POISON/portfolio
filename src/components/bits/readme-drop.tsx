@@ -7,6 +7,12 @@
 // derived from the row's own URL at render time and the README is fetched
 // live per repo (new public repo → new row → its README just works).
 //
+// Device rules:
+//   • Hover-capable devices (any window width): hover a row → dropdown.
+//   • Touch-only devices (phones, tablets): each row gets a visible
+//     "README ▾ OPEN" strip — tap to unfold, tap again/outside to close.
+//   • Both paths share the same fetch pipeline and caches below.
+//
 // Robustness rules:
 //   • GitHub's rendered-README endpoint first (sanitized upstream), plain
 //     raw text as fallback, then a cached "no readme" verdict (never re-hammer
@@ -15,7 +21,7 @@
 //     rewritten; images that still fail are removed (no broken icons).
 //   • Links never 404 the site: bare file links open on GitHub.
 //   • 12s abort timeout on every fetch.
-//   • Touch devices never trigger it (hover-capable pointers only).
+//   • Every repo with no README gets a cached verdict (never re-hammered).
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
@@ -148,36 +154,43 @@ export default function ReadmeDrop({
     return () => el.removeEventListener("error", bury, true);
   }, []);
 
-  const open = () => {
-    if (!path || !window.matchMedia("(hover: hover) and (min-width: 768px)").matches) return;
-    if (openTimer.current) window.clearTimeout(openTimer.current);
-    openTimer.current = window.setTimeout(async () => {
-      if (!alive.current) return;
-      if (noReadme.has(path)) {
-        setDrop({ open: true, status: "error", kind: "text", text: "" });
-        return;
-      }
-      const hit = cache.get(path);
-      if (hit) {
-        setDrop({ open: true, status: "ok", kind: hit.kind, text: hit.content });
-        return;
-      }
-      setDrop({ open: true, status: "loading", kind: "html", text: "" });
-      // rendered HTML first, plain text as fallback, verdict cached
+  // shared fetch pipeline — rendered HTML → plain text → cached verdict.
+  // Used by both the hover path and the touch toggle.
+  const load = async () => {
+    if (!path) return;
+    if (noReadme.has(path)) {
+      setDrop({ open: true, status: "error", kind: "text", text: "" });
+      return;
+    }
+    const hit = cache.get(path);
+    if (hit) {
+      setDrop({ open: true, status: "ok", kind: hit.kind, text: hit.content });
+      return;
+    }
+    setDrop({ open: true, status: "loading", kind: "html", text: "" });
+    try {
+      const content = await fetchRendered(path);
+      cache.set(path, { kind: "html", content });
+      if (alive.current) setDrop({ open: true, status: "ok", kind: "html", text: content });
+    } catch {
       try {
-        const content = await fetchRendered(path);
-        cache.set(path, { kind: "html", content });
-        if (alive.current) setDrop({ open: true, status: "ok", kind: "html", text: content });
+        const plain = await fetchPlain(path);
+        cache.set(path, { kind: "text", content: plain.slice(0, CAP) });
+        if (alive.current) setDrop({ open: true, status: "ok", kind: "text", text: plain.slice(0, CAP) });
       } catch {
-        try {
-          const plain = await fetchPlain(path);
-          cache.set(path, { kind: "text", content: plain.slice(0, CAP) });
-          if (alive.current) setDrop({ open: true, status: "ok", kind: "text", text: plain.slice(0, CAP) });
-        } catch {
-          noReadme.add(path);
-          if (alive.current) setDrop({ open: true, status: "error", kind: "text", text: "" });
-        }
+        noReadme.add(path);
+        if (alive.current) setDrop({ open: true, status: "error", kind: "text", text: "" });
       }
+    }
+  };
+
+  // hover path (any hover-capable device at ANY window width) — debounced so
+  // fast sweeps across rows don't fire fetches
+  const open = () => {
+    if (!path || !window.matchMedia("(hover: hover)").matches) return;
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    openTimer.current = window.setTimeout(() => {
+      if (alive.current) void load();
     }, 120);
   };
 
@@ -188,6 +201,28 @@ export default function ReadmeDrop({
     }
     if (alive.current) setDrop((d) => (d.open ? { ...d, open: false } : d));
   };
+
+  // touch path (phones / tablets) — hover never fires there, so each row
+  // carries a visible toggle: tap to unfold, tap again or outside to close.
+  const toggleTouch = () => {
+    if (!path || window.matchMedia("(hover: hover)").matches) return;
+    if (drop.open) {
+      close();
+      (document.activeElement as HTMLElement | null)?.blur?.();
+      return;
+    }
+    void load();
+  };
+
+  // tapping anywhere outside the row closes the open dropdown (touch flow)
+  useEffect(() => {
+    if (!drop.open) return;
+    const onDoc = (e: PointerEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) close();
+    };
+    document.addEventListener("pointerdown", onDoc, true);
+    return () => document.removeEventListener("pointerdown", onDoc, true);
+  }, [drop.open]);
 
   return (
     <div
@@ -204,6 +239,16 @@ export default function ReadmeDrop({
       }}
     >
       {children}
+
+      {/* touch-only toggle — hidden entirely on hover-capable devices via CSS */}
+      <button
+        type="button"
+        className="row-readme mono"
+        aria-expanded={drop.open}
+        onClick={toggleTouch}
+      >
+        {drop.open ? "README × CLOSE" : "README ▾ OPEN"}
+      </button>
 
       {drop.open && (
         <div className="readme-drop" role="note" aria-label={`${name} — README from GitHub`}>
